@@ -19,6 +19,7 @@ import {
 import { ensureBinary } from "./infra/binaries.js";
 import { loadDotEnv } from "./infra/dotenv.js";
 import { normalizeEnv } from "./infra/env.js";
+import { initGlobalProxy } from "./infra/global-proxy.js";
 import { isMainModule } from "./infra/is-main.js";
 import { ensureMoltbotCliOnPath } from "./infra/path-env.js";
 import {
@@ -36,6 +37,7 @@ import { assertWebChannel, normalizeE164, toWhatsappJid } from "./utils.js";
 
 loadDotEnv({ quiet: true });
 normalizeEnv();
+initGlobalProxy();
 ensureMoltbotCliOnPath();
 
 // Capture all console output into structured logs while keeping stdout/stderr behavior.
