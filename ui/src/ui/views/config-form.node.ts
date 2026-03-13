@@ -1,5 +1,5 @@
 import { html, nothing, type TemplateResult } from "lit";
-import { icons as sharedIcons } from "../icons.ts";
+import { t } from "../../i18n/index.ts";
 import type { ConfigUiHints } from "../types.ts";
 import {
   defaultValue,
@@ -226,8 +226,24 @@ function resolveFieldMeta(
   hints: ConfigUiHints,
 ): FieldMeta {
   const hint = hintForPath(path, hints);
-  const label = hint?.label ?? schema.title ?? humanize(String(path.at(-1)));
-  const help = hint?.help ?? schema.description;
+  const pathKeyStr = pathKey(path);
+
+  // Try to get translated label first
+  const translationKey = `config.fields.${pathKeyStr.replace(/\./g, "_")}`;
+  const translatedLabel = t(translationKey);
+
+  // Use translated label if available (t() returns the key if translation not found)
+  const label =
+    translatedLabel !== translationKey
+      ? translatedLabel
+      : (hint?.label ?? schema.title ?? humanize(String(path.at(-1))));
+
+  // Try to get translated help text
+  const helpTranslationKey = `${translationKey}Help`;
+  const translatedHelp = t(helpTranslationKey);
+  const help =
+    translatedHelp !== helpTranslationKey ? translatedHelp : (hint?.help ?? schema.description);
+
   const schemaTags = normalizeTags(schema["x-tags"] ?? schema.tags);
   const hintTags = normalizeTags(hint?.tags);
   return {
@@ -415,7 +431,7 @@ export function renderNode(params: {
   if (unsupported.has(key)) {
     return html`<div class="cfg-field cfg-field--error">
       <div class="cfg-field__label">${label}</div>
-      <div class="cfg-field__error">Unsupported schema node. Use Raw mode.</div>
+      <div class="cfg-field__error">${t("config.messages.unsupportedSchemaNode")}</div>
     </div>`;
   }
   if (
@@ -610,7 +626,7 @@ export function renderNode(params: {
   return html`
     <div class="cfg-field cfg-field--error">
       <div class="cfg-field__label">${label}</div>
-      <div class="cfg-field__error">Unsupported type: ${type}. Use Raw mode.</div>
+      <div class="cfg-field__error">${t("config.messages.unsupportedType", { type })}</div>
     </div>
   `;
 }
@@ -1041,7 +1057,7 @@ function renderArray(params: {
     return html`
       <div class="cfg-field cfg-field--error">
         <div class="cfg-field__label">${label}</div>
-        <div class="cfg-field__error">Unsupported array schema. Use Raw mode.</div>
+        <div class="cfg-field__error">${t("config.messages.unsupportedArraySchema")}</div>
       </div>
     `;
   }
@@ -1086,7 +1102,7 @@ function renderArray(params: {
                 <button
                   type="button"
                   class="cfg-array__item-remove"
-                  title="Remove item"
+                  title="${t("config.messages.removeItem")}"
                   ?disabled=${disabled}
                   @click=${() => {
                     const next = [...arr];
@@ -1236,7 +1252,7 @@ function renderMapField(params: {
                   <button
                     type="button"
                     class="cfg-map__item-remove"
-                    title="Remove entry"
+                    title="${t("config.messages.removeEntry")}"
                     ?disabled=${disabled}
                     @click=${() => {
                       const next = { ...value };

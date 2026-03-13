@@ -189,6 +189,8 @@ export const zh_CN: TranslationMap = {
       searchJobs: "搜索任务",
       searchPlaceholder: "名称、描述或代理",
       enabled: "启用状态",
+      schedule: "调度",
+      lastRun: "最后运行",
       all: "全部",
       sort: "排序",
       nextRun: "下次运行",
@@ -197,6 +199,7 @@ export const zh_CN: TranslationMap = {
       direction: "方向",
       ascending: "升序",
       descending: "降序",
+      reset: "重置",
       noMatching: "没有匹配的任务。",
       loading: "加载中...",
       loadMore: "加载更多任务",
@@ -375,6 +378,327 @@ export const zh_CN: TranslationMap = {
       systemEventTextRequired: "系统事件文本为必填。",
       agentMessageRequiredShort: "代理消息为必填。",
       nameRequiredShort: "名称为必填。",
+    },
+  },
+  config: {
+    sections: {
+      env: "环境变量",
+      envDesc: "传递给网关进程的环境变量",
+      update: "更新",
+      updateDesc: "自动更新设置和发布渠道",
+      agents: "代理",
+      agentsDesc: "代理配置、模型和身份",
+      auth: "身份验证",
+      authDesc: "API 密钥和身份验证配置",
+      channels: "频道",
+      channelsDesc: "消息频道（Telegram、Discord、Slack 等）",
+      messages: "消息",
+      messagesDesc: "消息处理和路由设置",
+      commands: "命令",
+      commandsDesc: "自定义斜杠命令",
+      hooks: "钩子",
+      hooksDesc: "Webhook 和事件钩子",
+      skills: "技能",
+      skillsDesc: "技能包和功能",
+      tools: "工具",
+      toolsDesc: "工具配置（浏览器、搜索等）",
+      gateway: "网关",
+      gatewayDesc: "网关服务器设置（端口、认证、绑定）",
+      wizard: "设置向导",
+      wizardDesc: "设置向导状态和历史",
+      meta: "元数据",
+      metaDesc: "网关元数据和版本信息",
+      logging: "日志",
+      loggingDesc: "日志级别和输出配置",
+      browser: "浏览器",
+      browserDesc: "浏览器自动化设置",
+      ui: "用户界面",
+      uiDesc: "用户界面偏好设置",
+      models: "模型",
+      modelsDesc: "AI 模型配置和提供商",
+      bindings: "绑定",
+      bindingsDesc: "键绑定和快捷键",
+      broadcast: "广播",
+      broadcastDesc: "广播和通知设置",
+      audio: "音频",
+      audioDesc: "音频输入/输出设置",
+      session: "会话",
+      sessionDesc: "会话管理和持久化",
+      cron: "定时任务",
+      cronDesc: "计划任务和自动化",
+      web: "Web",
+      webDesc: "Web 服务器和 API 设置",
+      discovery: "发现",
+      discoveryDesc: "服务发现和网络",
+      canvasHost: "Canvas 主机",
+      canvasHostDesc: "Canvas 渲染和显示",
+      talk: "语音",
+      talkDesc: "语音和语音设置",
+      plugins: "插件",
+      pluginsDesc: "插件管理和扩展",
+    },
+    fields: {
+      // Wizard fields
+      wizard_lastRunAt: "向导最后运行时间戳",
+      wizard_lastRunAtHelp:
+        "设置向导在此主机上最近完成时的 ISO 时间戳。用于在支持和操作审计期间确认引导的最近性。",
+      wizard_lastRunVersion: "向导最后运行版本",
+      wizard_lastRunVersionHelp:
+        "在此配置上最近一次向导运行时记录的 OpenClaw 版本。用于诊断不同版本之间引导行为的差异。",
+      wizard_lastRunCommit: "向导最后运行提交",
+      wizard_lastRunCommitHelp:
+        "在开发构建中记录的最后一次向导执行的源代码提交标识符。用于在调试期间将引导行为与确切的源代码状态关联。",
+      wizard_lastRunCommand: "向导最后运行命令",
+      wizard_lastRunCommandHelp:
+        "记录最新向导运行的命令调用以保留执行上下文。用于在验证设置回归时重现引导步骤。",
+      wizard_lastRunMode: "向导最后运行模式",
+      wizard_lastRunModeHelp:
+        '最近引导流程记录的向导执行模式为 "local" 或 "remote"。用于了解设置是针对直接本地运行时还是远程网关拓扑。',
+
+      // Meta fields
+      meta_lastTouchedVersion: "配置最后修改版本",
+      meta_lastTouchedVersionHelp: "OpenClaw 写入配置时自动设置。",
+      meta_lastTouchedAt: "配置最后修改时间",
+      meta_lastTouchedAtHelp: "最后一次配置写入的 ISO 时间戳（自动设置）。",
+
+      // Environment fields
+      env_shellEnv: "Shell 环境导入",
+      env_shellEnv_enabled: "启用 Shell 环境导入",
+      env_shellEnv_enabledHelp:
+        "在启动初始化期间启用从用户 shell 配置文件加载环境变量。对于开发机器保持启用，或在具有显式环境管理的锁定服务环境中禁用。",
+      env_shellEnv_timeoutMs: "Shell 环境导入超时（毫秒）",
+      env_shellEnv_timeoutMsHelp:
+        "在应用回退行为之前允许 shell 环境解析的最大时间（毫秒）。使用更短的超时以加快启动速度，或在 shell 初始化较重时增加。",
+      env_vars: "环境变量覆盖",
+      env_varsHelp:
+        "合并到 Ope运行时进程环境中的显式键/值环境变量覆盖。使用此选项进行确定性环境配置，而不是仅依赖 shell 配置文件的副作用。",
+
+      // Logging fields
+      logging_level: "日志级别",
+      logging_levelHelp:
+        '运行时日志记录器输出的主要日志级别阈值："silent"、"fatal"、"error"、"warn"、"info"、"debug" 或 "trace"。生产环境保持 "info" 或 "warn"，仅在调查期间使用 debug/trace。',
+      logging_file: "日志文件路径",
+      logging_fileHelp:
+        "除控制台日志记录外或代替控制台日志记录的持久化日志输出的可选文件路径。使用托管的可写路径，并使保留/轮换与您的操作策略保持一致。",
+      logging_consoleLevel: "控制台日志级别",
+      logging_consoleLevelHelp:
+        '控制台特定的日志阈值："silent"、"fatal"、"error"、"warn"、"info"、"debug" 或 "trace" 用于终端输出控制。如果需要，使用此选项使本地控制台更安静，同时保留更丰富的文件日志记录。',
+      logging_consoleStyle: "控制台日志样式",
+      logging_consoleStyleHelp:
+        '控制台输出格式样式：根据操作员和摄取需求选择 "pretty"、"compact" 或 "json"。对机器解析管道使用 json，对以人为本的终端工作流使用 pretty/compact。',
+      logging_redactSensitive: "敏感数据脱敏模式",
+      logging_redactSensitiveHelp:
+        '敏感脱敏模式："off" 禁用内置掩码，而 "tools" 脱敏敏感工具/配置有效负载字段。除非您有隔离的安全日志接收器，否则在共享日志中保持 "tools"。',
+      logging_redactPatterns: "自定义脱敏模式",
+      logging_redactPatternsHelp:
+        "在发出/存储之前应用于日志输出的其他自定义脱敏正则表达式模式。使用此选项掩码内置脱敏规则未涵盖的组织特定令牌和标识符。",
+
+      // Gateway fields
+      gateway_port: "网关端口",
+      gateway_portHelp:
+        "网关监听器用于 API、控制 UI 和面向通道的入口路径的 TCP 端口。使用专用端口并避免与反向代理或本地开发服务发生冲突。",
+      gateway_mode: "网关模式",
+      gateway_modeHelp:
+        '网关操作模式："local" 在此主机上运行通道和代理运行时，而 "remote" 通过远程传输连接。除非您有意运行拆分的远程网关拓扑，否则保持 "local"。',
+      gateway_bind: "网关绑定模式",
+      gateway_bindHelp:
+        '网络绑定配置文件："auto"、"lan"、"loopback"、"custom" 或 "tailnet" 以控制接口暴露。除非外部客户端必须连接，否则保持 "loopback" 或 "auto" 以实现最安全的本地操作。',
+      gateway_customBindHost: "网关自定义绑定主机",
+      gateway_customBindHostHelp:
+        "当 gateway.bind 设置为 custom 时用于手动接口定位的显式绑定主机/IP。使用精确地址并避免通配符绑定，除非需要外部暴露。",
+      gateway_auth: "网关认证",
+      gateway_authHelp:
+        "网关 HTTP/WebSocket 访问的身份验证策略，包括模式、凭据、受信任代理行为和速率限制。对于每个非回环部署，保持启用身份验证。",
+      gateway_auth_mode: "网关认证模式",
+      gateway_auth_modeHelp:
+        '网关身份验证模式：根据您的边缘架构选择 "none"、"token"、"password" 或 "trusted-proxy"。对于直接暴露使用 token/password，仅在加固的身份感知代理后使用 trusted-proxy。',
+      gateway_auth_token: "网关令牌",
+      gateway_auth_password: "网关密码",
+      gateway_trustedProxies: "网关受信任代理 CIDR",
+      gateway_trustedProxiesHelp:
+        "允许提供转发的客户端身份标头的上游代理的 CIDR/IP 允许列表。保持此列表狭窄，以便不受信任的跃点无法冒充用户。",
+
+      // Update fields
+      update_channel: "更新通道",
+      update_channelHelp: 'git + npm 安装的更新通道（"stable"、"beta" 或 "dev"）。',
+      update_checkOnStart: "启动时检查更新",
+      update_checkOnStartHelp: "网关启动时检查 npm 更新（默认：true）。",
+      update_auto_enabled: "启用自动更新",
+      update_auto_enabledHelp: "为软件包安装启用后台自动更新（默认：false）。",
+
+      // Tools fields
+      tools_web_search_enabled: "启用网络搜索工具",
+      tools_web_fetch_enabled: "启用网络获取工具",
+      tools_media_image_enabled: "启用图像理解",
+      tools_media_video_enabled: "启用视频理解",
+
+      // Browser fields
+      browser_enabled: "启用浏览器",
+      browser_headless: "浏览器无头模式",
+      browser_cdpUrl: "浏览器 CDP URL",
+
+      // Channels fields
+      channels_telegram_botToken: "Telegram 机器人令牌",
+      channels_discord_token: "Discord 机器人令牌",
+      channels_slack_botToken: "Slack 机器人令牌",
+
+      // Session fields
+      session_scope: "会话范围",
+      session_idleMinutes: "会话空闲分钟数",
+      session_store: "会话存储路径",
+
+      // Agents fields
+      agents_defaults_workspace: "工作区",
+      agents_defaults_repoRoot: "仓库根目录",
+      agents_defaults_model_primary: "主要模型",
+      agents_defaults_model_fallbacks: "模型回退",
+      agents_defaults_imageModel_primary: "图像模型",
+      agents_defaults_pdfModel_primary: "PDF 模型",
+      agents_defaults_compaction: "压缩",
+      agents_defaults_compaction_mode: "压缩模式",
+
+      // Models fields
+      models_mode: "模型目录模式",
+      models_providers: "模型提供商",
+
+      // Auth fields
+      auth_profiles: "认证配置文件",
+      auth_order: "认证配置文件顺序",
+
+      // ACP fields
+      acp_enabled: "启用 ACP",
+      acp_enabledHelp: "启用 ACP（代理控制协议）功能。",
+      acp_backend: "ACP 后端",
+      acp_defaultAgent: "ACP 默认代理",
+      acp_allowedAgents: "ACP 允许的代理",
+      acp_maxConcurrentSessions: "ACP 最大并发会话数",
+
+      // Commands fields
+      commands_native: "原生命令",
+      commands_text: "文本命令",
+      commands_bash: "允许 Bash 聊天命令",
+      commands_config: "允许 /config",
+      commands_debug: "允许 /debug",
+      commands_restart: "允许重启",
+
+      // Hooks fields
+      hooks_enabled: "启用钩子",
+      hooks_enabledHelp: "启用 Webhook 和事件钩子功能。",
+      hooks_path: "钩子端点路径",
+      hooks_token: "钩子认证令牌",
+      hooks_maxBodyBytes: "钩子最大请求体字节数",
+
+      // Cron fields
+      cron_enabled: "启用定时任务",
+      cron_enabledHelp: "启用定时任务调度功能。",
+      cron_store: "定时任务存储路径",
+      cron_maxConcurrentRuns: "定时任务最大并发运行数",
+
+      // Memory fields
+      memory_backend: "内存后端",
+      memory_citations: "内存引用模式",
+
+      // Diagnostics fields
+      diagnostics_enabled: "启用诊断",
+      diagnostics_enabledHelp: "启用诊断和调试功能。",
+      diagnostics_otel: "OpenTelemetry",
+      diagnostics_otelHelp:
+        "网关组件发出的跟踪、指标和日志的 OpenTelemetry 导出设置。在与集中式可观察性后端和分布式跟踪管道集成时使用此选项。",
+      diagnostics_otel_enabled: "启用 OpenTelemetry",
+      diagnostics_otel_endpoint: "OpenTelemetry 端点",
+      diagnostics_otel_protocol: "OpenTelemetry 协议",
+      diagnostics_cacheTrace: "缓存跟踪",
+      diagnostics_cacheTraceHelp:
+        "用于观察嵌入式运行中的缓存决策和有效负载上下文的缓存跟踪日志记录设置。暂时启用此选项进行调试，然后禁用以减少敏感日志占用空间。",
+
+      // CLI fields
+      cli_banner: "CLI 横幅",
+      cli_bannerHelp:
+        "CLI 启动横幅控制标题/版本行和标语样式行为。保持横幅启用以进行快速版本/上下文检查，然后将标语模式调整为您的首选噪音级别。",
+      cli_banner_taglineMode: "CLI 横幅标语模式",
+      cli_banner_taglineModeHelp:
+        '控制 CLI 启动横幅中的标语样式："random"（默认）从旋转标语池中选择，"default" 始终显示中性默认标语，"off" 隐藏标语文本同时保留横幅版本行。',
+
+      // UI fields
+      ui_seamColor: "强调色",
+      ui_assistant: "助手外观",
+      ui_assistant_name: "助手名称",
+      ui_assistant_avatar: "助手头像",
+
+      // Messages fields
+      messages_messagePrefix: "入站消息前缀",
+      messages_responsePrefix: "出站响应前缀",
+      messages_groupChat: "群聊规则",
+      messages_ackReaction: "确认反应表情符号",
+      messages_suppressToolErrors: "抑制工具错误警告",
+      messages_queue: "入站队列",
+      messages_queue_mode: "队列模式",
+
+      // Discovery fields
+      discovery_wideArea: "广域发现",
+      discovery_wideArea_enabled: "启用广域发现",
+      discovery_mdns: "mDNS 发现",
+      discovery_mdns_mode: "mDNS 发现模式",
+
+      // Canvas Host fields
+      canvasHost_enabled: "启用 Canvas 主机",
+      canvasHost_root: "Canvas 主机根目录",
+      canvasHost_port: "Canvas 主机端口",
+      canvasHost_liveReload: "Canvas 主机实时重载",
+
+      // Talk fields
+      talk_voiceId: "语音 ID",
+      talk_modelId: "模型 ID",
+      talk_provider: "语音提供商",
+      talk_apiKey: "语音 API 密钥",
+      talk_outputFormat: "输出格式",
+      talk_interruptOnSpeech: "语音时中断",
+
+      // Plugins fields
+      plugins_enabled: "启用插件",
+      plugins_enabledHelp: "启用插件系统功能。",
+      plugins_allow: "插件允许列表",
+      plugins_deny: "插件拒绝列表",
+      plugins_load: "插件加载器",
+
+      // Bindings fields
+      bindings: "绑定",
+      bindings_type: "绑定类型",
+      bindings_agentId: "绑定代理 ID",
+
+      // Broadcast fields
+      broadcast_strategy: "广播策略",
+
+      // Audio fields
+      audio_transcription: "音频转录",
+      audio_transcription_command: "音频转录命令",
+      audio_transcription_timeoutSeconds: "音频转录超时（秒）",
+
+      // Web fields
+      web_enabled: "启用 Web 通道",
+      web_enabledHelp: "启用 Web 通道功能。",
+      web_heartbeatSeconds: "Web 通道心跳间隔（秒）",
+
+      // Node Host fields
+      nodeHost_browserProxy: "节点浏览器代理",
+      nodeHost_browserProxy_enabled: "启用节点浏览器代理",
+
+      // Media fields
+      media_preserveFilenames: "保留媒体文件名",
+
+      advanced: "高级",
+    },
+    messages: {
+      schemaUnavailable: "架构不可用。",
+      unsupportedSchema: "不支持的架构。请使用原始模式。",
+      noSettingsMatch: '没有匹配 "{query}" 的设置',
+      noSettingsInSection: "此部分没有设置",
+      unsupportedSchemaNode: "不支持的架构节点。请使用原始模式。",
+      unsupportedType: "不支持的类型：{type}。请使用原始模式。",
+      unsupportedArraySchema: "不支持的数组架构。请使用原始模式。",
+      removeItem: "删除项目",
+      removeEntry: "删除条目",
+      addItem: "添加项目",
     },
   },
 };

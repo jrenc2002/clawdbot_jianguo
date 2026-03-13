@@ -4,7 +4,6 @@ import {
   SUPPORTED_LOCALES,
   isSupportedLocale,
   loadLazyLocaleTranslation,
-  resolveNavigatorLocale,
 } from "./registry.ts";
 import type { Locale, TranslationMap } from "./types.ts";
 
@@ -50,9 +49,8 @@ class I18nManager {
     if (isSupportedLocale(saved)) {
       return saved;
     }
-    const language =
-      typeof globalThis.navigator?.language === "string" ? globalThis.navigator.language : null;
-    return resolveNavigatorLocale(language ?? "");
+    // 硬编码默认语言为中文
+    return "zh-CN";
   }
 
   private loadLocale() {

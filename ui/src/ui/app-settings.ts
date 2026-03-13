@@ -1,4 +1,4 @@
-import { roleScopesAllow } from "../../../src/shared/operator-scope-compat.js";
+import { i18n, isSupportedLocale } from "../i18n/index.ts";
 import { refreshChat } from "./app-chat.ts";
 import {
   startLogsPolling,
@@ -71,6 +71,10 @@ export function applySettings(host: SettingsHost, next: UiSettings) {
     host.theme = next.theme;
     host.themeMode = next.themeMode;
     applyResolvedTheme(host, resolveTheme(next.theme, next.themeMode));
+  }
+  // Apply locale change
+  if (next.locale && isSupportedLocale(next.locale)) {
+    void i18n.setLocale(next.locale);
   }
   host.applySessionKey = host.settings.lastActiveSessionKey;
 }
